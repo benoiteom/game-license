@@ -45,7 +45,7 @@ export default function About() {
                         Don't Sue Us Please
                     </div>
                     <p className="mb-4 text-lg leading-relaxed text-blueGray-700">
-                        Open License is a community supported resource and is not to be treated as law. The information we provide is 
+                        Game License is a community supported resource and is not to be treated as law. The information we provide is 
                         verified to the best of our extent, but we cannot guarantee that it is entirely true. If you should receive a 
                         copyright strike after seeing that a game is copyright free on our site, you may not take any action against us, 
                         and we instead ask that you mark the game as having incorrect information so we can fix the error as soon as 

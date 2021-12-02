@@ -70,7 +70,7 @@ export default class MyApp extends App {
             name="viewport"
             content="width=device-width, initial-scale=1, shrink-to-fit=no"
           />
-          <title>Open License</title>
+          <title>Game License</title>
           <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
           <link href="https://unpkg.com/pattern.css" rel="stylesheet"></link>
         </Head>

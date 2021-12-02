@@ -45,7 +45,7 @@ export default function About() {
                         Our Fundamentals
                     </div>
                     <p className="mb-4 text-lg leading-relaxed text-blueGray-700">
-                        Here at Open License, our mission is to solve the problem of licensed music. The current system is outdated, 
+                        Here at Game License, our mission is to solve the problem of licensed music. The current system is outdated, 
                         and creates a lose-lose scenario for both streamers and music producers alike. The streamers are not allowed to 
                         play music and the artists are not paid for their work. By creating this database of games known to have copyrighted 
                         music, we are first supporting streamers and helping prevent copyright strikes. Eventually, we hope to find a way to 

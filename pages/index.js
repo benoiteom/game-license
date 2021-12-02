@@ -493,7 +493,7 @@ function Index({ games }) {
                 Want to support us?
               </h3>
               <p className="text-blueGray-500 text-lg leading-relaxed mt-4 mb-4">
-                All funds received will go towards running and improving the Open License platform for the community. If you would prefer to donate your time please consider adding a few games. All support is greatly appreciated!
+                All funds received will go towards running and improving the Game License platform for the community. If you would prefer to donate your time please consider adding a few games. All support is greatly appreciated!
               </p>
               <div className="sm:block flex flex-col mt-10">
                 <Link href='/add-game'>
