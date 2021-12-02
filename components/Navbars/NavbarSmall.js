@@ -16,7 +16,7 @@ export default function Navbar(props) {
                 className="text-white text-md font-bold leading-relaxed inline-block mr-4 py-3 whitespace-nowrap uppercase"
                 href="#pablo"
               >
-                OpenLicense
+                GameLicense
               </a>
             </Link>
             <button

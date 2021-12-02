@@ -63,7 +63,7 @@ export default function About() {
                             Get In Touch
                         </div>
                         <p className="text-lg leading-relaxed text-blueGray-700">
-                            Any questions, comments, or concers? We'd love to hear from you! Feel free to reach out to us at openlicense@gmail.com 
+                            Any questions, comments, or concers? We'd love to hear from you! Feel free to reach out to us at gamelicense@gmail.com 
                             or send us a message through one of our social media platforms.
                         </p>
                     </div>
@@ -79,7 +79,7 @@ export default function About() {
                             Support our cause
                         </div>
                         <p className="text-lg leading-relaxed text-blueGray-700">
-                            We currently support donations through PayPal at <u>openlicense@gmail.com</u> and will be adding more options soon. Thank you so much!
+                            We currently support donations through PayPal at <u>gamelicense@gmail.com</u> and will be adding more options soon. Thank you so much!
                         </p>
                     </div>
                   </div>
