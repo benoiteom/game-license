@@ -4,6 +4,7 @@ import App from "next/app";
 import Head from "next/head";
 import Router from "next/router";
 import { Provider } from 'next-auth/client';
+import { initializeApp } from 'firebase/app';
 
 import PageChange from "components/PageChange/PageChange.js";
 
@@ -63,6 +64,15 @@ export default class MyApp extends App {
 
     const Layout = Component.layout || (({ children }) => <>{children}</>);
 
+    const firebaseConfig = {
+      apiKey: '<your-api-key>',
+      authDomain: '<your-auth-domain>',
+      databaseURL: '<your-database-url>',
+      storageBucket: 'game-license.appspot.com'
+    };
+
+    const app = initializeApp(firebaseConfig);
+
     return (
       <Provider session={this.props.pageProps.session}>
         <Head>
@@ -71,7 +81,6 @@ export default class MyApp extends App {
             content="width=device-width, initial-scale=1, shrink-to-fit=no"
           />
           <title>Game License</title>
-          <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
           <link href="https://unpkg.com/pattern.css" rel="stylesheet"></link>
         </Head>
         <Layout>

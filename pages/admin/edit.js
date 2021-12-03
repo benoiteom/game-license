@@ -1,8 +1,14 @@
 import React, { useState } from "react";
 import { useSession, getSession, signIn } from 'next-auth/client';
+import { initializeApp } from "firebase/app";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
-import CardSettings from "components/Cards/CardSettings.js";
-import CardProfile from "components/Cards/CardProfile.js";
+const firebaseConfig = {
+  apiKey: '<your-api-key>',
+  authDomain: '<your-auth-domain>',
+  databaseURL: '<your-database-url>',
+  storageBucket: 'game-license.appspot.com'
+};
 
 import Admin from "layouts/Admin.js";
 
@@ -10,7 +16,10 @@ export default function Edit({ data, games}) {
   const [session] = useSession();
   const [editStatus, setEditStatus] = useState('DONE');
   const [tableStatus, setTableStatus] = useState('DONE');
+  const [image, setImage] = useState('');
 
+  const firebaseApp = initializeApp(firebaseConfig);
+  const storage = getStorage(firebaseApp);
 
   if (!session) {
     signIn();
@@ -71,7 +80,7 @@ export default function Edit({ data, games}) {
                             document.getElementById('genre').value = game.genre;
                             document.getElementById('copyright').value = game.copyright;
                             document.getElementById('details').value = game.details;
-                            document.getElementById('image').value = game.image;
+                            setImage(game.image);
                             document.getElementById('color').value = game.color;
                             document.getElementById('developer').value = game.developer;
                           }}
@@ -131,45 +140,54 @@ export default function Edit({ data, games}) {
                   <input type="text" placeholder="Details" id="details" className="py-2.5 placeholder-blueGray-400 text-black relative bg-white rounded-lg text-base border-2 border-blueGray-500 outline-none focus:outline-none w-full"/>
               </div>
               <div className="pt-0 mb-4 float-left w-full">
-                  <input type="text" placeholder="Image" id="image" className="py-2.5 placeholder-blueGray-400 text-black relative bg-white rounded-lg text-base border-2 border-blueGray-500 outline-none focus:outline-none w-full"/>
-              </div>
-              <div className="pt-0 mb-4 float-left w-full">
                   <input type="text" placeholder="Color" id="color" className="py-2.5 placeholder-blueGray-400 text-black relative bg-white rounded-lg text-base border-2 border-blueGray-500 outline-none focus:outline-none w-full"/>
               </div>
               <div className="pt-0 mb-4 float-left w-full">
                   <input type="text" placeholder="Developer" id="developer" className="py-2.5 placeholder-blueGray-400 text-black relative bg-white rounded-lg text-base border-2 border-blueGray-500 outline-none focus:outline-none w-full"/>
+              </div>
+              <div className="pt-0 mb-4 float-left w-1/3 mr-1/6">
+                  <p className="text-gray-100" style={{color: 'white'}}><b>Logo Image:</b> <input type="file" id="image" name="left" accept="image/*" onChange={(e) => setImage(e.target.files[0])} /></p>
               </div>
               <div className="pt-0 mb-4 float-left w-full">
                   <button
                     className="py-2.5 text-white font-semibold relative bg-blueGray-500 rounded-lg text-base border-2 border-blueGray-500 outline-none focus:outline-none w-full uppercase"
                     onClick={async () => {
                       setEditStatus('WORKING')
-                      let edit_game = {
-                        name: document.getElementById('name').value,
-                        copyright: document.getElementById('copyright').value,
-                        genre: document.getElementById('genre').value,
-                        details: document.getElementById('details').value,
-                        image: document.getElementById('image').value,
-                        color: document.getElementById('color').value,
-                        developer: document.getElementById('developer').value,
-                      }
-                      const res = await fetch('/api/admin/edit', {
-                        method: 'POST',
-                        body: JSON.stringify({ edit_game }),
-                        headers: {
-                          'Content-Type': 'application/json'
-                        },
-                      })
-                      const data = await res.json();
-                      setEditStatus('DONE')
-                      document.getElementById('name').value = ''
-                      document.getElementById('copyright').value = ''
-                      document.getElementById('genre').value = ''
-                      document.getElementById('details').value = ''
-                      document.getElementById('image').value = ''
-                      document.getElementById('color').value = ''
-                      document.getElementById('developer').value = ''
+
+                      const storageRef = ref(storage, document.getElementById('name').value);
+                      uploadBytes(storageRef, image).then(async (snapshot) => {
+                        console.log('Uploaded a blob ' + document.getElementById('name').value);
+                        getDownloadURL(storageRef).then(async (firebase_url) => {
+
+                          let edit_game = {
+                            name: document.getElementById('name').value,
+                            copyright: document.getElementById('copyright').value,
+                            genre: document.getElementById('genre').value,
+                            details: document.getElementById('details').value,
+                            image: firebase_url,
+                            color: document.getElementById('color').value,
+                            developer: document.getElementById('developer').value,
+                          }
+                          const res = await fetch('/api/admin/edit', {
+                            method: 'POST',
+                            body: JSON.stringify({ edit_game }),
+                            headers: {
+                              'Content-Type': 'application/json'
+                            },
+                          })
+                          const data = await res.json();
+                          setEditStatus('DONE')
+                          document.getElementById('name').value = ''
+                          document.getElementById('copyright').value = ''
+                          document.getElementById('genre').value = ''
+                          document.getElementById('details').value = ''
+                          document.getElementById('image').value = ''
+                          document.getElementById('color').value = ''
+                          document.getElementById('developer').value = ''
+                        })
+                      });
                     }}
+
                   >{editStatus}</button>
               </div>
             </div>

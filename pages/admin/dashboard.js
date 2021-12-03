@@ -1,25 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { useSession, getSession, signIn } from 'next-auth/client';
+import { initializeApp } from "firebase/app";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
-// components
+const firebaseConfig = {
+  apiKey: '<your-api-key>',
+  authDomain: '<your-auth-domain>',
+  databaseURL: '<your-database-url>',
+  storageBucket: 'game-license.appspot.com'
+};
 
-import CardLineChart from "components/Cards/CardLineChart.js";
-import CardBarChart from "components/Cards/CardBarChart.js";
-import CardPageVisits from "components/Cards/CardPageVisits.js";
-import CardVerifyForm from "components/Cards/CardVerifyForm.js";
-import CardSocialTraffic from "components/Cards/CardSocialTraffic.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
 import HeaderStats from "components/Headers/HeaderStats.js";
-
-// layout for page
-
-// import Admin from "layouts/Admin.js";
 
 export default function Dashboard({ data, games }) {
   const [session] = useSession();
   const [verifyStatus, setVerifyStatus] = useState('DONE');
   const [tableStatus, setTableStatus] = useState('DONE');
+  const [image, setImage] = useState(null);
 
+  const firebaseApp = initializeApp(firebaseConfig);
+  const storage = getStorage(firebaseApp);
 
   if (!session) {
     signIn();
@@ -59,10 +60,10 @@ export default function Dashboard({ data, games }) {
                         <input type="text" placeholder="Details" id="details" className="py-2.5 placeholder-blueGray-400 text-black relative bg-white rounded-lg text-base border-2 border-blueGray-500 outline-none focus:outline-none w-full"/>
                     </div>
                     <div className="pt-0 mb-4 float-left w-1/3 mr-1/6">
-                        <input type="text" placeholder="Image" id="image" className="py-2.5 placeholder-blueGray-400 text-black relative bg-white rounded-lg text-base border-2 border-blueGray-500 outline-none focus:outline-none w-full"/>
+                        <input type="text" placeholder="Color" id="color" className="py-2.5 placeholder-blueGray-400 text-black relative bg-white rounded-lg text-base border-2 border-blueGray-500 outline-none focus:outline-none w-full"/>
                     </div>
                     <div className="pt-0 mb-4 float-left w-1/3 mr-1/6">
-                        <input type="text" placeholder="Color" id="color" className="py-2.5 placeholder-blueGray-400 text-black relative bg-white rounded-lg text-base border-2 border-blueGray-500 outline-none focus:outline-none w-full"/>
+                        <p className="text-gray-100" style={{color: 'white'}}><b>Logo Image:</b> <input type="file" id="image" name="left" accept="image/*" onChange={(e) => setImage(e.target.files[0])} /></p>
                     </div>
                     <div className="pt-0 mb-4 float-left w-1/3 mr-1/6">
                         <input type="text" placeholder="Developer" id="developer" className="py-2.5 placeholder-blueGray-400 text-black relative bg-white rounded-lg text-base border-2 border-blueGray-500 outline-none focus:outline-none w-full"/>
@@ -72,31 +73,39 @@ export default function Dashboard({ data, games }) {
                           className="py-2.5 text-white font-semibold relative bg-blueGray-500 rounded-lg text-base border-2 border-blueGray-500 outline-none focus:outline-none w-full uppercase"
                           onClick={async () => {
                             setVerifyStatus('WORKING')
-                            let verify_game = {
-                              name: document.getElementById('name').value,
-                              copyright: document.getElementById('copyright').value,
-                              genre: document.getElementById('genre').value,
-                              details: document.getElementById('details').value,
-                              image: document.getElementById('image').value,
-                              color: document.getElementById('color').value,
-                              developer: document.getElementById('developer').value,
-                            }
-                            const res = await fetch('/api/admin/verify', {
-                              method: 'POST',
-                              body: JSON.stringify({ verify_game }),
-                              headers: {
-                                'Content-Type': 'application/json'
-                              },
-                            })
-                            const data = await res.json();
-                            setVerifyStatus('DONE')
-                            document.getElementById('name').value = ''
-                            document.getElementById('copyright').value = ''
-                            document.getElementById('genre').value = ''
-                            document.getElementById('details').value = ''
-                            document.getElementById('image').value = ''
-                            document.getElementById('color').value = ''
-                            document.getElementById('developer').value = ''
+
+                            const storageRef = ref(storage, document.getElementById('name').value);
+                            uploadBytes(storageRef, image).then(async (snapshot) => {
+                              console.log('Uploaded a blob ' + document.getElementById('name').value);
+                              getDownloadURL(storageRef).then(async (firebase_url) => {
+
+                              let verify_game = {
+                                name: document.getElementById('name').value,
+                                copyright: document.getElementById('copyright').value,
+                                genre: document.getElementById('genre').value,
+                                details: document.getElementById('details').value,
+                                image: firebase_url,
+                                color: document.getElementById('color').value,
+                                developer: document.getElementById('developer').value,
+                              }
+                              const res = await fetch('/api/admin/verify', {
+                                method: 'POST',
+                                body: JSON.stringify({ verify_game }),
+                                headers: {
+                                  'Content-Type': 'application/json'
+                                },
+                              })
+                              const data = await res.json();
+                              setVerifyStatus('DONE')
+                              document.getElementById('name').value = ''
+                              document.getElementById('copyright').value = ''
+                              document.getElementById('genre').value = ''
+                              document.getElementById('details').value = ''
+                              document.getElementById('image').value = ''
+                              document.getElementById('color').value = ''
+                              document.getElementById('developer').value = ''
+                            });
+                          })
                           }}
                         >{verifyStatus}</button>
                     </div>
