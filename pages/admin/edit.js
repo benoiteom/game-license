@@ -1,14 +1,5 @@
 import React, { useState } from "react";
 import { useSession, getSession, signIn } from 'next-auth/client';
-import { initializeApp } from "firebase/app";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-
-const firebaseConfig = {
-  apiKey: '<your-api-key>',
-  authDomain: '<your-auth-domain>',
-  databaseURL: '<your-database-url>',
-  storageBucket: 'game-license.appspot.com'
-};
 
 import Admin from "layouts/Admin.js";
 
@@ -17,9 +8,6 @@ export default function Edit({ data, games}) {
   const [editStatus, setEditStatus] = useState('DONE');
   const [tableStatus, setTableStatus] = useState('DONE');
   const [image, setImage] = useState('');
-
-  const firebaseApp = initializeApp(firebaseConfig);
-  const storage = getStorage(firebaseApp);
 
   if (!session) {
     signIn();
@@ -61,28 +49,28 @@ export default function Edit({ data, games}) {
                   </tr>
                 </thead>
                 <tbody>
-                  { games.map((game, i, arr) => (
+                  { Object.keys(games).map((game, i, arr) => (
                     <tr key={i}>
                       <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4 text-left">
-                        {game.name}
+                        {game}
                       </th>
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-                        {game.genre}
+                        {games[game].genre}
                       </td>
                       <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-                        {game.copyright}
+                        {games[game].copyright}
                       </td>
                       <td className="border-t-0 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                         <button
                           className="bg-sky-400 rounded px-4 py-1 text-white font-semibold"
                           onClick={() => {
-                            document.getElementById('name').value = game.name;
-                            document.getElementById('genre').value = game.genre;
-                            document.getElementById('copyright').value = game.copyright;
-                            document.getElementById('details').value = game.details;
-                            setImage(game.image);
-                            document.getElementById('color').value = game.color;
-                            document.getElementById('developer').value = game.developer;
+                            document.getElementById('name').value = game;
+                            document.getElementById('genre').value = games[game].genre;
+                            document.getElementById('copyright').value = games[game].copyright;
+                            document.getElementById('details').value = games[game].details;
+                            setImage(games[game].image);
+                            document.getElementById('color').value = games[game].color;
+                            document.getElementById('developer').value = games[game].developer;
                           }}
                         >Edit</button>
                         <button
@@ -90,8 +78,8 @@ export default function Edit({ data, games}) {
                           onClick={async () => {
                             setTableStatus('WORKING')
                             let deleted_game = {
-                              name: game.name,
-                              genre: game.genre,
+                              name: game,
+                              genre: games[game].genre,
                               type: 'verified'
                             }
                             const res = await fetch('/api/admin/delete', {
@@ -102,7 +90,7 @@ export default function Edit({ data, games}) {
                               },
                             })
                             const data = await res.json();
-                            games.splice(i, 1);
+                            delete games[game];
                             setTableStatus('DONE')
                           }}
                         >Delete</button>

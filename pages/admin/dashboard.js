@@ -1,26 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useSession, getSession, signIn } from 'next-auth/client';
-import { initializeApp } from "firebase/app";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-
-const firebaseConfig = {
-  apiKey: '<your-api-key>',
-  authDomain: '<your-auth-domain>',
-  databaseURL: '<your-database-url>',
-  storageBucket: 'game-license.appspot.com'
-};
 
 import Sidebar from "components/Sidebar/Sidebar.js";
 import HeaderStats from "components/Headers/HeaderStats.js";
 
-export default function Dashboard({ data, games }) {
+export default function Dashboard({ games }) {
   const [session] = useSession();
   const [verifyStatus, setVerifyStatus] = useState('DONE');
   const [tableStatus, setTableStatus] = useState('DONE');
   const [image, setImage] = useState(null);
-
-  const firebaseApp = initializeApp(firebaseConfig);
-  const storage = getStorage(firebaseApp);
 
   if (!session) {
     signIn();
@@ -148,25 +136,25 @@ export default function Dashboard({ data, games }) {
                       </tr>
                     </thead>
                     <tbody>
-                      { games.map((game, i, arr) => (
+                      { Object.keys(games).map((game, i, arr) => (
                         <tr key={i}>
                           <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4 text-left">
-                            {game.name}
+                            {game.split('--')[0]}
                           </th>
                           <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-                            {game.genre}
+                            {games[game].genre}
                           </td>
                           <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-                            {game.copyright}
+                            {games[game].copyright[2] != null ? 'unsure' : games[game].copyright[1] != null ? ' not copyright free' : games[game].copyright[0] != null ? ' copyright free' : null}
                           </td>
                           <td className="border-t-0 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                             <button
                               className="bg-sky-400 rounded px-4 py-1 text-white font-semibold"
                               onClick={() => {
-                                document.getElementById('name').value = game.name;
-                                document.getElementById('genre').value = game.genre;
-                                document.getElementById('copyright').value = game.copyright;
-                                document.getElementById('details').value = game.details;
+                                document.getElementById('name').value = game.split('--')[0];
+                                document.getElementById('genre').value = games[game].genre;
+                                document.getElementById('copyright').value = games[game].copyright[2] != null ? 'unsure' : games[game].copyright[1] != null ? ' not copyright free' : games[game].copyright[0] != null ? ' copyright free' : null;
+                                document.getElementById('details').value = games[game].details;
                               }}
                             >Verify</button>
                             <button
@@ -174,8 +162,8 @@ export default function Dashboard({ data, games }) {
                               onClick={async () => {
                                 setTableStatus('WORKING')
                                 let deleted_game = {
-                                  name: game.name,
-                                  genre: game.genre,
+                                  name: game,
+                                  genre: games[game].genre,
                                   type: 'unverified'
                                 }
                                 const res = await fetch('/api/admin/delete', {
@@ -186,7 +174,7 @@ export default function Dashboard({ data, games }) {
                                   },
                                 })
                                 const data = await res.json();
-                                games.splice(i, 1);
+                                delete games[game];
                                 setTableStatus('DONE')
                               }}
                             >Delete</button>

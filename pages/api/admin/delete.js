@@ -1,16 +1,18 @@
-import axios from 'axios';
+import { ref, child, set } from "firebase/database";
+import { db } from '../../../firebase';
 
 export default async function handler(req, res) {
     if (req.method === 'POST') {
-        await axios
-        .post('http://localhost:8080/delete-game', req.body.deleted_game)
-        .then(() => {
-            console.log('Game Deleted')
-        })
-        .catch(err => {
-            console.error(err);
-        });
-
-        res.status(200).json({ status: "Success" })
+        const name = req.body.deleted_game.name;
+        delete req.body.deleted_game.name;
+        if (req.body.deleted_game.type == 'unverified') {
+            await set(ref(db, 'unverified/' + name), null).then(() => {
+                res.status(200).json({ status: "Success" });
+            });
+        } else {
+            await set(ref(db, 'games/' + name), null).then(() => {
+                res.status(200).json({ status: "Success" });
+            });
+        }
     }
 }

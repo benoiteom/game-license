@@ -5,7 +5,7 @@ import NavbarSmall from "components/Navbars/NavbarSmall.js";
 import Footer from "components/Footers/Footer.js";
 
 
-export default function Search(props) {
+export default function Search({ games }) {
 
   const [searchTerm, setSearchTerm] = useState('#null#');
   const [newTerm, setNewTerm] = useState('');
@@ -68,17 +68,17 @@ export default function Search(props) {
                       </Link>
                     </form>
                     <div className="w-full mt-20" style={{borderRadius: '.5rem'}}>
-                      {props.games.filter(game => game.name.toLowerCase().includes(searchTerm.toLowerCase())).map((game, i, arr) => (
-                        <Link href={`/game/${game.name}`}>
+                      {Object.keys(games).filter(game => game.toLowerCase().includes(searchTerm.toLowerCase())).map((game, i, arr) => (
+                        <Link href={`/game/${game}`}>
                           <div key={i} className={`border-blueGray-500 shadow-lg bg-white hover:bg-gray-200 border-2 px-4 py-4 mb-4 cursor-pointer`}
                             style={{borderRadius: '.5rem .5rem .5rem .5rem'}} >
                             <div className="overflow-hidden">
-                              <p className="font-semibold float-left capitalize">{game.name}</p>
-                              { game.copyright == 'unsure' ?
+                              <p className="font-semibold float-left capitalize">{game}</p>
+                              { games[game].copyright == 'unsure' ?
                               <p className="font-semibold float-right text-gray-400 uppercase">Under Review</p>
-                              : game.copyright == 'copyright free' ?
+                              : games[game].copyright == 'copyright free' ?
                               <p className="font-semibold float-right text-sky-400 uppercase">Copyright Free</p>
-                              : game.copyright == 'not copyright free' ?
+                              : games[game].copyright == 'not copyright free' ?
                               <p className="font-semibold float-right text-red-500 uppercase">Not Copyright Free</p>
                               : null }
                             </div>
@@ -87,7 +87,7 @@ export default function Search(props) {
                       ))}
                     </div>
                     <div className="w-full mt-20" style={{borderRadius: '.5rem'}}>
-                      {props.games.filter(game => game.name.toLowerCase().includes(searchTerm.toLowerCase())).length == 0 ?
+                      {Object.keys(games).filter(game => game.toLowerCase().includes(searchTerm.toLowerCase())).length == 0 ?
                           <div className={`text-center px-4 py-4 mb-24`}
                             style={{borderRadius: '.5rem .5rem .5rem .5rem'}} >
                             <p className="font-semibold">No Games Found</p>
@@ -124,9 +124,5 @@ export async function getStaticProps() {
     const res = await fetch('http://localhost:3000/api/games');
     let games = await res.json();
 
-    return {
-        props: {
-           games: games
-        }
-    }
+    return { props: { games } }
 }

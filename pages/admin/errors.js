@@ -57,13 +57,13 @@ export default function Dashboard({ data, errors }) {
                       </tr>
                     </thead>
                     <tbody>
-                      { errors.map((error, i, arr) => (
+                      { Object.keys(errors).map((error, i, arr) => (
                         <tr key={i}>
                           <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4 text-left">
-                            {error.game}
+                            {error}
                           </th>
                           <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-                            {error.message}
+                            {errors[error]}
                           </td>
                           <td className="border-t-0 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                             <button
@@ -71,8 +71,8 @@ export default function Dashboard({ data, errors }) {
                               onClick={async () => {
                                 setTableStatus('WORKING')
                                 let deleted_error = {
-                                  game: error.game,
-                                  message: error.message,
+                                  game: error,
+                                  message: errors[error],
                                 }
                                 const res = await fetch('/api/admin/resolve-error', {
                                   method: 'POST',
@@ -82,7 +82,7 @@ export default function Dashboard({ data, errors }) {
                                   },
                                 })
                                 const data = await res.json();
-                                errors.splice(i, 1);
+                                delete errors[error];
                                 setTableStatus('DONE')
                               }}
                             >Resolve</button>

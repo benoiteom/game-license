@@ -41,7 +41,7 @@ function Index({ games }) {
             </div>
           </div>
           <div className="my-20 w-full">
-            <form>
+            <form autoComplete="off">
               <div className="pt-0 float-left w-1/2 ml-1/6" style={{marginLeft: '16.6666%', width: '50%'}}>
                 <span className="z-10 h-full leading-snug font-normal absolute text-center text-blueGray-300 absolute bg-transparent rounded text-base items-center justify-center w-8 pl-3 py-3">
                   <i className="fas fa-search"></i>
@@ -57,13 +57,13 @@ function Index({ games }) {
             <div className="relative">
               {searchTerm ?
                 <div className="absolute ml-1/6 w-1/2 shadow-lg" style={{top: '55px', left:'16.6666%', zIndex: '11', borderRadius: '.5rem'}}>
-                  {games.filter(game => game.name.toLowerCase().includes(searchTerm.toLowerCase())).map((game, i, arr) => (
+                  {Object.keys(games).filter(game => game.toLowerCase().includes(searchTerm.toLowerCase())).map((game, i, arr) => (
                     <div>
                       {i < 4 ?
-                        <Link href={`/game/${game.name}`}>
-                          <div key={i} className={`border-blueGray-500 bg-white hover:bg-gray-200 ${i != arr.length - 1 && i != 3 ? "border-b-0" : null} border-2 px-4 py-3 relative cursor-pointer`}
+                        <Link key={i} href={`/game/${game}`}>
+                          <div className={`border-blueGray-500 bg-white hover:bg-gray-200 ${i != arr.length - 1 && i != 3 ? "border-b-0" : null} border-2 px-4 py-3 relative cursor-pointer`}
                             style={i == 0 && i == arr.length - 1 ? {borderRadius: '.5rem .5rem .5rem .5rem'} : (i == 0 ? {borderRadius: '.5rem .5rem 0px 0px'} : (i == arr.length - 1 || i == 3 ? {borderRadius: '0px 0px .5rem .5rem'} : {borderRadius: '0px'}))} >
-                            <p className="relative">{game.name}</p>
+                            <p className="relative">{game}</p>
                           </div>
                         </Link>
                       : null }
@@ -519,7 +519,7 @@ function Index({ games }) {
 
 export async function getStaticProps() {
   const res = await fetch('http://localhost:3000/api/games')
-  const games = await res.json()
+  let games = await res.json()
   return {
     props: {
       games,

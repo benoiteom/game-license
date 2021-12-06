@@ -100,19 +100,19 @@ function Game({ game }) {
       </main>
       <Footer />
 
-      <div class={`${modal} min-w-screen min-h-screen animated fadeIn faster fixed left-0 top-0 flex justify-center items-center inset-0 z-10 outline-none focus:outline-none bg-transparent`} id="modal-id">
-        <div class="absolute bg-black min-w-screen min-h-screen opacity-50 inset-0 z-0"></div>
-          <div class="min-w-140-px w-1/3 opacity-100 max-w-lg rounded-lg p-5 relative mx-auto my-auto shadow-lg bg-white">
-            <div class="">
-              <div class="text-center p-3 flex-auto justify-center">
+      <div className={`${modal} min-w-screen min-h-screen animated fadeIn faster fixed left-0 top-0 flex justify-center items-center inset-0 z-10 outline-none focus:outline-none bg-transparent`} id="modal-id">
+        <div className="absolute bg-black min-w-screen min-h-screen opacity-50 inset-0 z-0"></div>
+          <div className="min-w-140-px w-1/3 opacity-100 max-w-lg rounded-lg p-5 relative mx-auto my-auto shadow-lg bg-white">
+            <div className="">
+              <div className="text-center p-3 flex-auto justify-center">
                 {/* <i className="fas fa-question mr-2 text-lg text-blueGray-400"></i> */}
-                <h2 class="text-xl font-bold py-4 ">Something look wrong?</h2>
+                <h2 className="text-xl font-bold py-4 ">Something look wrong?</h2>
                 <textarea id="error_message" className="border p-4 bg-gray-100" style={{ boxSizing: 'border-box', width: '90%', height: '150px' }} placeholder="Thanks for letting us know" />
             </div>
-            <div class="p-3  mt-2 text-center space-x-4 md:block">
-                <button class="mb-2 md:mb-0 bg-white px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-gray-600 rounded-full hover:shadow-md hover:bg-gray-100" onClick={() => {setModal('hidden')}}>CANCEL</button>
+            <div className="p-3  mt-2 text-center space-x-4 md:block">
+                <button className="mb-2 md:mb-0 bg-white px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-gray-600 rounded-full hover:shadow-md hover:bg-gray-100" onClick={() => {setModal('hidden')}}>CANCEL</button>
                 <button
-                  class="mb-2 md:mb-0 bg-red-700 border border-red-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-md hover:bg-red-600"
+                  className="mb-2 md:mb-0 bg-red-700 border border-red-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-md hover:bg-red-600"
                   onClick={async () => {
                     setSubmitError('WORKING')
                     let error = {
@@ -143,16 +143,17 @@ function Game({ game }) {
 export async function getStaticProps(context) {
     const res = await fetch('http://localhost:3000/api/games/' + context.params.name);
     const game = await res.json();
+    game["name"] = context.params.name;
 
-    return { props: { game: game } }
+    return { props: { game } }
 }
 
 export async function getStaticPaths() {
     const res = await fetch('http://localhost:3000/api/games')
     const games = await res.json();
     let paths = [];
-    for (let game of games) {
-        paths.push({ params: { name: game.name }});
+    for (let game in games) {
+        paths.push({ params: { name: game }});
     }
   
     return { paths: paths, fallback: false }

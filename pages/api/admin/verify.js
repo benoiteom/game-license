@@ -1,16 +1,12 @@
-import axios from 'axios';
+import { ref, set } from "firebase/database";
+import { db } from '../../../firebase';
 
 export default async function handler(req, res) {
     if (req.method === 'POST') {
-        await axios
-        .post('http://localhost:8080/verify-game', req.body.verify_game)
-        .then(() => {
-            console.log('Game Verified')
-        })
-        .catch(err => {
-            console.error(err);
+        const name = req.body.verify_game.name;
+        delete req.body.verify_game.name;
+        await set(ref(db, 'games/' + name), req.body.verify_game).then(() => {
+            res.status(200).json({ status: "Success" });
         });
-
-        res.status(200).json({ status: "Success" })
     }
 }

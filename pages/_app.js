@@ -4,7 +4,6 @@ import App from "next/app";
 import Head from "next/head";
 import Router from "next/router";
 import { Provider } from 'next-auth/client';
-import { initializeApp } from 'firebase/app';
 
 import PageChange from "components/PageChange/PageChange.js";
 
@@ -63,15 +62,6 @@ export default class MyApp extends App {
     const { Component, pageProps } = this.props;
 
     const Layout = Component.layout || (({ children }) => <>{children}</>);
-
-    const firebaseConfig = {
-      apiKey: '<your-api-key>',
-      authDomain: '<your-auth-domain>',
-      databaseURL: '<your-database-url>',
-      storageBucket: 'game-license.appspot.com'
-    };
-
-    const app = initializeApp(firebaseConfig);
 
     return (
       <Provider session={this.props.pageProps.session}>

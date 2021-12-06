@@ -15,13 +15,13 @@ export default class AddGame extends React.Component {
 
     let game = {
       name: document.getElementById('game_name').value,
-      copyright: [document.getElementById('copyright_free').value != '' ? "copyright free" : null, document.getElementById('not_copyright_free').value != '' ? "not copyright free" : null, document.getElementById('copyright_unsure').value != '' ? "copyright unsure" : null],
+      copyright: [document.getElementById('copyright_free').checked ? "copyright free" : null, document.getElementById('not_copyright_free').checked ? "not copyright free" : null, document.getElementById('copyright_unsure').checked ? "copyright unsure" : null],
       genre: document.getElementById('game_genre').value,
       details: document.getElementById('copyright_details').value,
       user_name: document.getElementById('user_name').value,
       user_email: document.getElementById('user_email').value,
       user_comments: document.getElementById('user_comments').value,
-      user_contact: document.getElementById('user_contact').value
+      user_contact: document.getElementById('user_contact').checked
     }
 
     const res = await fetch('/api/games/submit', {
