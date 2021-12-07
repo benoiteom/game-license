@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useSession, getSession, signIn } from 'next-auth/client';
-import { ref, child, get } from "firebase/database";
-import { db } from '../../firebase';
+import { ref as ref_db, child, get } from "firebase/database";
+import { ref as ref_st, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { db, storage } from '../../firebase';
 
 import Sidebar from "components/Sidebar/Sidebar.js";
 import HeaderStats from "components/Headers/HeaderStats.js";
@@ -64,7 +65,7 @@ export default function Dashboard({ games }) {
                           onClick={async () => {
                             setVerifyStatus('WORKING')
 
-                            const storageRef = ref(storage, document.getElementById('name').value);
+                            const storageRef = ref_st(storage, document.getElementById('name').value);
                             uploadBytes(storageRef, image).then(async (snapshot) => {
                               console.log('Uploaded a blob ' + document.getElementById('name').value);
                               getDownloadURL(storageRef).then(async (firebase_url) => {
@@ -198,7 +199,7 @@ export default function Dashboard({ games }) {
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);
-  const dbRef = ref(db);
+  const dbRef = ref_db(db);
   let snapshot = await get(child(dbRef, `unverified`));
   let games = null;
   if (snapshot.exists())

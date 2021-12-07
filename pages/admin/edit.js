@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useSession, getSession, signIn } from 'next-auth/client';
-import { ref, child, get } from "firebase/database";
-import { db } from '../../firebase';
+import { ref as ref_db, child, get } from "firebase/database";
+import { ref as ref_st, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { db, storage } from '../../firebase';
 
 import Admin from "layouts/Admin.js";
 
@@ -144,7 +145,7 @@ export default function Edit({ data, games}) {
                     onClick={async () => {
                       setEditStatus('WORKING')
 
-                      const storageRef = ref(storage, document.getElementById('name').value);
+                      const storageRef = ref_st(storage, document.getElementById('name').value);
                       uploadBytes(storageRef, image).then(async (snapshot) => {
                         console.log('Uploaded a blob ' + document.getElementById('name').value);
                         getDownloadURL(storageRef).then(async (firebase_url) => {
@@ -192,7 +193,7 @@ Edit.layout = Admin;
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);
-  const dbRef = ref(db);
+  const dbRef = ref_db(db);
   let snapshot = await get(child(dbRef, `games`));
   let games = null;
   if (snapshot.exists())

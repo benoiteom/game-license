@@ -1,5 +1,6 @@
 import { initializeApp } from '@firebase/app';
 import { getDatabase } from '@firebase/database';
+import { getStorage } from '@firebase/storage';
 
 export const firebaseApp = initializeApp({
     apiKey: '',
@@ -9,3 +10,4 @@ export const firebaseApp = initializeApp({
     storageBucket: 'gs://game-license.appspot.com'
 });
 export const db = getDatabase(firebaseApp);
+export const storage = getStorage(firebaseApp);

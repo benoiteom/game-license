@@ -24,10 +24,6 @@ export default function Dashboard({ data, errors }) {
           <h2 className="absolute left-0 px-12 top-50-px text-gray-100 uppercase font-semibold z-2"><span className="text-gray-400">Welcome</span> {session.user.name}</h2>
           <HeaderStats />
           <div className="px-4 md:px-10 mx-auto w-full -m-24">
-            {/* <div className="flex flex-wrap mt-4">
-              <div className="w-full mb-12 xl:mb-0 px-4">
-              </div>
-            </div> */}
             <div className="flex flex-wrap">
               <div className="w-full mb-12 xl:mb-0 px-4">
               <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
