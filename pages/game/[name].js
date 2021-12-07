@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { ref, child, get } from "firebase/database";
+import { db } from '../../firebase';
 
 import NavbarSmall from "components/Navbars/NavbarSmall.js";
 import Footer from "components/Footers/Footer.js";
@@ -141,22 +143,24 @@ function Game({ game }) {
 }
 
 export async function getStaticProps(context) {
-    const res = await fetch('http://localhost:3000/api/games/' + context.params.name);
-    const game = await res.json();
+  const dbRef = ref(db);
+  let snapshot = await get(child(dbRef, `games/${context.params.name}`));
+  let game = null;
+  if (snapshot.exists())
+    game = snapshot.val();
     game["name"] = context.params.name;
-
-    return { props: { game } }
+  return { props: { game } }
 }
 
 export async function getStaticPaths() {
-    const res = await fetch('http://localhost:3000/api/games')
-    const games = await res.json();
-    let paths = [];
-    for (let game in games) {
-        paths.push({ params: { name: game }});
-    }
-  
-    return { paths: paths, fallback: false }
+  const dbRef = ref(db);
+  let snapshot = await get(child(dbRef, `games`));
+  let games = null, paths = [];
+  if (snapshot.exists())
+    games = snapshot.val();
+  for (let game in games)
+    paths.push({ params: { name: game }});
+  return { paths: paths, fallback: false }
 }
 
 export default Game;

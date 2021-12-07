@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import Link from 'next/link';
+import { ref, child, get } from "firebase/database";
+import { db } from '../firebase';
 
 import NavbarSmall from "components/Navbars/NavbarSmall.js";
 import Footer from "components/Footers/Footer.js";
@@ -121,8 +123,10 @@ export default function Search({ games }) {
 }
 
 export async function getStaticProps() {
-    const res = await fetch('http://localhost:3000/api/games');
-    let games = await res.json();
-
-    return { props: { games } }
+  const dbRef = ref(db);
+  let snapshot = await get(child(dbRef, `games`));
+  let games = null;
+  if (snapshot.exists())
+    games = snapshot.val();
+  return { props: { games } }
 }

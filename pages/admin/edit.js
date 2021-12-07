@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useSession, getSession, signIn } from 'next-auth/client';
+import { ref, child, get } from "firebase/database";
+import { db } from '../../firebase';
 
 import Admin from "layouts/Admin.js";
 
@@ -190,13 +192,10 @@ Edit.layout = Admin;
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);
-  const res = await fetch('http://localhost:3000/api/games');
-  const games = await res.json();
-  return {
-    props: {
-      session,
-      data: session ? true : false,
-      games
-    }
-  }
+  const dbRef = ref(db);
+  let snapshot = await get(child(dbRef, `games`));
+  let games = null;
+  if (snapshot.exists())
+    games = snapshot.val();
+  return { props: { session, data: session ? true : false, games } }
 }

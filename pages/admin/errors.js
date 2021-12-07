@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSession, getSession, signIn } from 'next-auth/client';
+import { ref, child, get } from "firebase/database";
+import { db } from '../../firebase';
 
 import Sidebar from "components/Sidebar/Sidebar.js";
 import HeaderStats from "components/Headers/HeaderStats.js";
@@ -102,17 +104,12 @@ export default function Dashboard({ data, errors }) {
   }
 }
 
-// Dashboard.layout = Admin;
-
 export async function getServerSideProps(context) {
   const session = await getSession(context);
-  const res = await fetch('http://localhost:3000/api/admin/errors');
-  const errors = await res.json();
-  return {
-    props: {
-      session,
-      data: session ? true : false,
-      errors
-    }
-  }
+  const dbRef = ref(db);
+  let snapshot = await get(child(dbRef, `errors`));
+  let errors = null;
+  if (snapshot.exists())
+    errors = snapshot.val();
+  return { props: { session, data: session ? true : false, errors } }
 }
