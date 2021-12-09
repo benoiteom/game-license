@@ -47,14 +47,14 @@ export default function Dashboard({ games }) {
                     <div className="pt-0 mb-4 float-left w-1/3 mr-1/6">
                         <input type="text" placeholder="Copyright" id="copyright" className="py-2.5 placeholder-blueGray-400 text-black relative bg-white rounded-lg text-base border-2 border-blueGray-500 outline-none focus:outline-none w-full"/>
                     </div>
-                    <div className="pt-0 mb-4 float-left w-1/3 mr-1/6">
-                        <input type="text" placeholder="Details" id="details" className="py-2.5 placeholder-blueGray-400 text-black relative bg-white rounded-lg text-base border-2 border-blueGray-500 outline-none focus:outline-none w-full"/>
+                    <div className="pt-0 mb-3 float-right w-1/3 mr-1/6" style={{marginRight: '17.1616%'}}>
+                        <textarea placeholder="Details" id="details" className="py-2.5 h-36 placeholder-blueGray-400 text-black relative bg-white rounded-lg text-base border-2 border-blueGray-500 outline-none focus:outline-none w-full"/>
                     </div>
                     <div className="pt-0 mb-4 float-left w-1/3 mr-1/6">
                         <input type="text" placeholder="Color" id="color" className="py-2.5 placeholder-blueGray-400 text-black relative bg-white rounded-lg text-base border-2 border-blueGray-500 outline-none focus:outline-none w-full"/>
                     </div>
                     <div className="pt-0 mb-4 float-left w-1/3 mr-1/6">
-                        <p className="text-gray-100" style={{color: 'white'}}><b>Logo Image:</b> <input type="file" id="image" name="left" accept="image/*" onChange={(e) => setImage(e.target.files[0])} /></p>
+                        <p className="text-gray-100 w-full" style={{color: 'white'}}><b>Logo Image:</b> <input className="w-full" type="file" id="image" name="left" accept="image/*" onChange={(e) => setImage(e.target.files[0])} /></p>
                     </div>
                     <div className="pt-0 mb-4 float-left w-1/3 mr-1/6">
                         <input type="text" placeholder="Developer" id="developer" className="py-2.5 placeholder-blueGray-400 text-black relative bg-white rounded-lg text-base border-2 border-blueGray-500 outline-none focus:outline-none w-full"/>

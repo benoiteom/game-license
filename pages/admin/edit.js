@@ -11,6 +11,7 @@ export default function Edit({ data, games}) {
   const [editStatus, setEditStatus] = useState('DONE');
   const [tableStatus, setTableStatus] = useState('DONE');
   const [image, setImage] = useState('');
+  const [imageString, setImageString] = useState('');
 
   if (!session) {
     signIn();
@@ -71,7 +72,7 @@ export default function Edit({ data, games}) {
                             document.getElementById('genre').value = games[game].genre;
                             document.getElementById('copyright').value = games[game].copyright;
                             document.getElementById('details').value = games[game].details;
-                            setImage(games[game].image);
+                            setImageString(games[game].image);
                             document.getElementById('color').value = games[game].color;
                             document.getElementById('developer').value = games[game].developer;
                           }}
@@ -146,6 +147,7 @@ export default function Edit({ data, games}) {
                       setEditStatus('WORKING')
 
                       const storageRef = ref_st(storage, document.getElementById('name').value);
+                      if (image != '') {
                       uploadBytes(storageRef, image).then(async (snapshot) => {
                         console.log('Uploaded a blob ' + document.getElementById('name').value);
                         getDownloadURL(storageRef).then(async (firebase_url) => {
@@ -166,7 +168,6 @@ export default function Edit({ data, games}) {
                               'Content-Type': 'application/json'
                             },
                           })
-                          const data = await res.json();
                           setEditStatus('DONE')
                           document.getElementById('name').value = ''
                           document.getElementById('copyright').value = ''
@@ -176,9 +177,33 @@ export default function Edit({ data, games}) {
                           document.getElementById('color').value = ''
                           document.getElementById('developer').value = ''
                         })
-                      });
+                      })} else {
+                        let edit_game = {
+                          name: document.getElementById('name').value,
+                          copyright: document.getElementById('copyright').value,
+                          genre: document.getElementById('genre').value,
+                          details: document.getElementById('details').value,
+                          image: imageString,
+                          color: document.getElementById('color').value,
+                          developer: document.getElementById('developer').value,
+                        }
+                        const res = await fetch('/api/admin/edit', {
+                          method: 'POST',
+                          body: JSON.stringify({ edit_game }),
+                          headers: {
+                            'Content-Type': 'application/json'
+                          },
+                        })
+                        setEditStatus('DONE')
+                        document.getElementById('name').value = ''
+                        document.getElementById('copyright').value = ''
+                        document.getElementById('genre').value = ''
+                        document.getElementById('details').value = ''
+                        document.getElementById('image').value = ''
+                        document.getElementById('color').value = ''
+                        document.getElementById('developer').value = ''
+                      }
                     }}
-
                   >{editStatus}</button>
               </div>
             </div>
