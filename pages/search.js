@@ -57,14 +57,14 @@ export default function Search({ games }) {
                         Find a Game
                     </div> */}
                     <form className='overflow-hidden'>
-                      <div className="pt-0 float-left w-1/2 ml-1/6" style={{marginLeft: '16.6666%', width: '50%'}}>
+                      <div className="pt-0 float-left w-2/3 md:w-6/12" style={{marginLeft: '16.6666%'}}>
                         <span className="z-10 h-full leading-snug font-normal absolute text-center text-blueGray-300 absolute bg-transparent rounded text-base items-center justify-center w-8 pl-3 py-4">
                           <i className="fas fa-search"></i>
                         </span>
                         <input type="text" placeholder="Find a game" onChange={e => setNewTerm(e.target.value)} id="game_input" className="px-3 py-2.5 my-1 placeholder-blueGray-400 text-black relative bg-white rounded-lg text-base border-2 border-blueGray-500 outline-none focus:outline-none w-full pl-10"/>
                       </div>
                       <Link href={{ pathname: '/search', query: { term: newTerm } }} >
-                        <button type="submit" className="float-left ml-1 my-1 text-white font-bold w-1/6 text-center py-2.5 rounded-lg outline-none focus:outline-none mr-1 mb-1 border-2 bg-blueGray-700 border-blueGray-700 uppercase text-base shadow">
+                        <button type="submit" className="hidden md:block float-left ml-1 my-1 text-white font-bold md:w-1/6 w-0 text-center py-2.5 rounded-lg outline-none focus:outline-none mr-1 mb-1 border-2 bg-blueGray-700 border-blueGray-700 uppercase text-base shadow">
                           Search
                         </button>
                       </Link>
@@ -76,13 +76,15 @@ export default function Search({ games }) {
                             style={{borderRadius: '.5rem .5rem .5rem .5rem'}} >
                             <div className="overflow-hidden">
                               <p className="font-semibold float-left capitalize">{game}</p>
-                              { games[game].copyright == 'unsure' ?
-                              <p className="font-semibold float-right text-gray-400 uppercase">Under Review</p>
-                              : games[game].copyright == 'copyright free' ?
-                              <p className="font-semibold float-right text-sky-400 uppercase">Copyright Free</p>
-                              : games[game].copyright == 'not copyright free' ?
-                              <p className="font-semibold float-right text-red-500 uppercase">Not Copyright Free</p>
-                              : null }
+                              <div className="overflow-hidden hidden md:block">
+                                { games[game].copyright == 'unsure' ?
+                                <p className="font-semibold float-right text-gray-400 uppercase">Under Review</p>
+                                : games[game].copyright == 'copyright free' ?
+                                <p className="font-semibold float-right text-sky-400 uppercase">Copyright Free</p>
+                                : games[game].copyright == 'not copyright free' ?
+                                <p className="font-semibold float-right text-red-500 uppercase">Not Copyright Free</p>
+                                : null }
+                              </div>
                             </div>
                           </div>
                         </Link>

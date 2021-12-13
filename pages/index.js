@@ -31,8 +31,8 @@ function Index({ games }) {
       </div>
       <section className="header relative pt-16 items-center flex my-36">
         <div className="container mx-auto items-left flex flex-wrap">
-          <div className="w-full md:w-12/12 lg:w-10/12 xl:w-10/12 px-4">
-            <div className="pt-32 sm:pt-0">
+          <div className="w-full px-4">
+            <div className="pt-0">
               <h2 className="font-semibold text-5xl text-black">
                 Keep your streams free of DMCA strikes
               </h2>
@@ -41,16 +41,16 @@ function Index({ games }) {
               </p>
             </div>
           </div>
-          <div className="my-20 w-full">
+          <div className="mt-20 mb-0 w-full md:mb-20 lg:mb-20 xl:mb-20 2xl:mb-20">
             <form autoComplete="off">
-              <div className="pt-0 float-left w-1/2 ml-1/6" style={{marginLeft: '16.6666%', width: '50%'}}>
+              <div className="pt-0 float-left w-2/3 md:w-6/12" style={{marginLeft: '16.6666%'}}>
                 <span className="z-10 h-full leading-snug font-normal absolute text-center text-blueGray-300 absolute bg-transparent rounded text-base items-center justify-center w-8 pl-3 py-3">
                   <i className="fas fa-search"></i>
                 </span>
                 <input type="text" placeholder="Find a game" onChange={e => setSearchTerm(e.target.value)} id="game_input" className="px-3 py-2.5 placeholder-blueGray-400 text-black relative bg-white rounded-lg text-base border-2 border-blueGray-500 outline-none focus:outline-none w-full pl-10"/>
               </div>
-              <Link href={{ pathname: '/search', query: { term: searchTerm } }} >
-                <button type="submit" className="float-left ml-1 text-white font-bold w-1/6 text-center py-2.5 rounded-lg outline-none focus:outline-none mr-1 mb-1 border-2 bg-blueGray-700 border-blueGray-700 uppercase text-base shadow hover:shadow-lg">
+              <Link href={{ pathname: '/search', query: { term: searchTerm } }} className="" >
+                <button type="submit" className="hidden md:block float-left ml-1 text-white font-bold md:w-1/6 w-0 text-center py-2.5 rounded-lg outline-none focus:outline-none mr-1 mb-1 border-2 bg-blueGray-700 border-blueGray-700 uppercase text-base shadow hover:shadow-lg">
                   Search
                 </button>
               </Link>
@@ -141,7 +141,7 @@ function Index({ games }) {
               </Link>
             </div>
 
-            <div className="w-full md:w-5/12 px-4 mr-auto ml-auto mt-48">
+            <div className="hidden md:block w-full md:w-5/12 px-4 mr-auto ml-auto mt-48">
               <div className="relative flex flex-col min-w-0 w-full mb-6 md:mt-0">
                 <img
                   alt="..."
@@ -151,7 +151,7 @@ function Index({ games }) {
                 <img
                   alt="..."
                   src="/img/HiW_3.png"
-                  className="w-full align-middle rounded-lg absolute shadow-lg max-w-210-px left-260-px -top-160-px"
+                  className="hidden lg:block w-full align-middle rounded-lg absolute shadow-lg max-w-210-px left-260-px -top-160-px"
                 />
                 <img
                   alt="..."
@@ -172,7 +172,7 @@ function Index({ games }) {
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center pt-40 mb-24">
+          <div className="flex flex-wrap items-center pt-0 md:pt-40 mb-24">
             <div className="w-full md:w-6/12 px-4 mr-auto ml-auto mt-32">
               <div className="justify-center flex flex-wrap relative">
                 <div className="my-4 w-full lg:w-6/12 px-4">

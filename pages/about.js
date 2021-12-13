@@ -79,7 +79,7 @@ export default function About() {
                             Support our cause
                         </div>
                         <p className="text-lg leading-relaxed text-blueGray-700">
-                            We currently support donations through PayPal at <u>gamelicense@gmail.com</u> and will be adding more options soon. Thank you so much!
+                            We greatly appreciate any donation you are able to make. We would love it if you could spend some time submitting a few games, but monetary donations are also helpful to keep us up and running. Currently you can donate through PayPal at <u>gamelicense@gmail.com</u> and we'll be adding more options soon. Thank you so much!
                         </p>
                     </div>
                   </div>
