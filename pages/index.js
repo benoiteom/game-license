@@ -49,7 +49,7 @@ function Index({ games }) {
                 </span>
                 <input type="text" placeholder="Find a game" onChange={e => setSearchTerm(e.target.value)} id="game_input" className="px-3 py-2.5 placeholder-blueGray-400 text-black relative bg-white rounded-lg text-base border-2 border-blueGray-500 outline-none focus:outline-none w-full pl-10"/>
               </div>
-              <Link href={{ pathname: '/search', query: { term: searchTerm } }} className="" >
+              <Link href={{ pathname: '/search', query: { term: searchTerm } }} >
                 <button type="submit" className="hidden md:block float-left ml-1 text-white font-bold md:w-1/6 w-0 text-center py-2.5 rounded-lg outline-none focus:outline-none mr-1 mb-1 border-2 bg-blueGray-700 border-blueGray-700 uppercase text-base shadow hover:shadow-lg">
                   Search
                 </button>
@@ -57,7 +57,7 @@ function Index({ games }) {
             </form>
             <div className="relative">
               {searchTerm ?
-                <div className="absolute ml-1/6 w-1/2 shadow-lg" style={{top: '55px', left:'16.6666%', zIndex: '11', borderRadius: '.5rem'}}>
+                <div className="absolute ml-1/6 w-2/3 md:w-6/12 shadow-lg" style={{top: '55px', left:'16.6666%', zIndex: '11', borderRadius: '.5rem'}}>
                   {Object.keys(games).filter(game => game.toLowerCase().includes(searchTerm.toLowerCase())).map((game, i, arr) => (
                     <div>
                       {i < 4 ?
