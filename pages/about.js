@@ -63,7 +63,7 @@ export default function About() {
                             Get In Touch
                         </div>
                         <p className="text-lg leading-relaxed text-blueGray-700">
-                            Any questions, comments, or concers? We'd love to hear from you! Feel free to reach out to us at gamelicense@gmail.com 
+                            Any questions, comments, or concers? We'd love to hear from you! Feel free to reach out to us at gamelicensesite@gmail.com 
                             or send us a message through one of our social media platforms.
                         </p>
                     </div>
@@ -79,7 +79,7 @@ export default function About() {
                             Support our cause
                         </div>
                         <p className="text-lg leading-relaxed text-blueGray-700">
-                            We greatly appreciate any donation you are able to make. We would love it if you could spend some time submitting a few games, but monetary donations are also helpful to keep us up and running. Currently you can donate through PayPal at <u>gamelicense@gmail.com</u> and we'll be adding more options soon. Thank you so much!
+                            We greatly appreciate any donation you are able to make. We would love it if you could spend some time submitting a few games, but monetary donations are also helpful to keep us up and running. Currently you can donate through PayPal at <u>gamelicensesite@gmail.com</u> and crypto at 0x86B1f2c2096DeC051043f0Ed28BCAcD6034A38C0 (Ethereum Mainnet). Thank you so much!
                         </p>
                     </div>
                   </div>
