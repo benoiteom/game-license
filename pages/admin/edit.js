@@ -21,6 +21,7 @@ export default function Edit({ data, games}) {
     <>
       <div className="flex flex-wrap">
         <div className="w-full lg:w-8/12 px-4">
+          <h2 className="absolute left-0 px-12 top-50-px text-gray-100 uppercase font-semibold z-2"><span className="text-gray-400">Welcome</span> {session.user.name}</h2>
           <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
             <div className="rounded-t mb-0 px-4 py-3 border-0">
               <div className="flex flex-wrap items-center">
